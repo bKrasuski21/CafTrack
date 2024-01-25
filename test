@@ -1,5 +1,21 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState, useEffect } from 'react'; // Import useState
-import { auth, googleProvider } from './config/firebase';
+
 import './App.css';
 import Button from 'react-bootstrap/Button';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -19,7 +35,7 @@ import {
 import login from './pages/login';
 import { clear } from '@testing-library/user-event/dist/clear';
 import { Auth } from './components/auth';
-import { dataBase } from './config/firebase'; // data from fire base 
+import { dataBase } from './config/firebase';
 import { getDocs } from 'firebase/firestore';
 import { getDoc, collection } from 'firebase/firestore';
 import 'firebase/auth'; 
@@ -27,12 +43,27 @@ import 'firebase/auth';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 
+
+firebase.initializeApp({
+  apiKey: "AIzaSyDg7eqOQDENGa3Rng-2de4u7iZSyBz5zk4",
+  authDomain: "cafchat-f1723.firebaseapp.com",
+  projectId: "cafchat-f1723",
+  storageBucket: "cafchat-f1723.appspot.com",
+  messagingSenderId: "870008338178",
+  appId: "1:870008338178:web:a08796f98fdad0c6c3f41b",
+  measurementId: "G-GEEHT25JLW"
+})
+
+const chatauth = firebase.auth();
+const chatfirestore = firebase.firestore();
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <div>Hello world!</div>,
   },
 ]);
+
 const availableTimes = ["12:00AM", "1:00","2:00","3:00", "4:00","5:00","6:00","7:00", "8:00","9:00", "10:00", "11:00", "12:00PM","1:00","2:00","3:00", "4:00","5:00","6:00","7:00", "8:00","9:00", "10:00", "11:00", "11:59"];
 const availableAM = ["AM", "PM"];
 const availableDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -242,20 +273,20 @@ let modifiedData = [
 ]; 
 function App() {
 
-  const caffeineDatabaseRef = collection(dataBase, "UserData"); // passed in database and the collection we are trying to access. caffeineDatabaseRef -> reference to our UserData collection
+  const caffeineDatabaseRef = collection(dataBase, "UserData");
   const [databaseData, setdatabaseData] = useState([]);
   useEffect(() => {
-    const getdatabaseData = async() => { 
+    const getdatabaseData = async() => { //read data from out database. // set databaseData to that data
       try {
-        const data = await getDocs(caffeineDatabaseRef); // get docs will get all of the docs inside this collection (i.e. UserData collection)
-        //console.log(data); // data is a query snapshot i.e. unfilted, a shit load of random data
-        const filteredData = data.docs.map((doc) => ({...doc.data(), id: doc.id})); // accessing all docs from data(UserData), returns only doc data, and user ID
+        const data = await getDocs(caffeineDatabaseRef);
+        const filteredData = data.docs.map((doc) => ({...doc.data()}));
         console.log(filteredData);
         setdatabaseData(filteredData);
       }catch(err){
         console.log(err);
       }
     };
+
     getdatabaseData();
   }, []);
   
@@ -275,19 +306,21 @@ function App() {
   const [SundayData, setSundayData] = useState(initialData.map(item => ({ ...item })));
 
   const clearData = () => {
-    let tempData = modifiedData.map(item => ({ ...item }));// creates structured array to modify data(i.e. has all the times)
+    let modifiedData = initialData.map(item => ({ ...item }));
+    
     if(buttonClicked == "Monday"){
-
-     databaseData.forEach((document) => { // for each document in the database (which is only 1 for now) 
-      if (document.caffeineData && Array.isArray(document.caffeineData)) {
-        console.log(document.caffeineData[5]); // document.caffeineData is an array of caffeine data
-        document.caffeineData.forEach((item, index) => { // iterates through each item in the array and sets our tempData to the value of the item at the same index
-          tempData[index].Caffeine = item;
-        });
-      }
-    });
-      console.log(tempData);
-      setMondayData(tempData); // sets the data for the graph to the tempData
+     /* let weirdData = MondayData.map(item => ({ ...item }));
+      databaseData.forEach(item => {
+        //weirdData.item.Caffeine = item.caffeineData;
+        console.log(item.caffeineData);
+        console.log("apple");
+      });
+        //console.log(weirdData.caffeine[15]);
+      //setMondayData(initialData.map(item => ({ ...item })));
+      weirdData.forEach(item => {
+        //console.log(item.Caffeine);
+      });*/
+      setMondayData(initialData.map(item => ({ ...item })));
    }else if(buttonClicked == "Tuesday"){
       setTuesdayData(initialData.map(item => ({ ...item })));
    }else if(buttonClicked == "Wednesday"){
@@ -306,9 +339,7 @@ function App() {
    
   } 
   const processCaffeineData = () => {
-    //getdatabaseData();
-    console.log(databaseData);
-   /*databaseData.forEach((document) => {
+    databaseData.forEach((document) => {
       if (document.caffeineData && Array.isArray(document.caffeineData)) {
         // Now you have access to the caffeineData array of this document
         let weirdData = MondayData.map(item => ({ ...item }));
@@ -320,7 +351,7 @@ function App() {
         });
         setMondayData(weirdData);
       }
-    });*/
+    });
   }; 
   const Monday = () => {
     setChartData(MondayData);
@@ -471,22 +502,19 @@ function App() {
     }
     setChartData(newData);
   };
-  //const [user] = useAuthState(Auth);
- // console.log(user);
+
   return (
     <>
+    
       <div className="App">
        
         <h1>Blood Caffeine Level</h1>
         <div className="status">{buttonClicked}</div>
-
-        
-     
-             <Auth/>
-    
+        <div className="App">
+          <Auth/>
           
-        
-   
+        </div>
+        {/* Input fields and submit button */}
         <input
           type="text"
           value={time}
@@ -564,3 +592,20 @@ function App() {
 }
 
 export default App;
+//let newData = modifiedData.map(item => ({ ...item }));
+
+/*
+<div>
+{databaseData.map(item => ({...item}))};
+</div>
+      
+  <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path = "/login" element = {<login />}/>;
+        </Routes>
+      </BrowserRouter>
+    </div>
+
+
+    

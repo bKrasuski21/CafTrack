@@ -1,10 +1,27 @@
 import { auth, googleProvider } from '../config/firebase';
 import { createUserWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
 import { useState } from "react";
+import { useAuthState } from 'react-firebase-hooks/auth';
 import Button from 'react-bootstrap/Button';
 
 
 export const Auth = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    //const auth = firebase.auth();
+    const [user] = useAuthState(auth);
+
+    console.log(auth?.currentUser?.email);
+
+    return (
+        <div>   
+         
+         {user ? <LogOff /> : <SignIn />} 
+         
+        </div>
+    );
+};
+function SignIn(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -26,6 +43,20 @@ export const Auth = () => {
             console.log(err);
         }
     };
+    return (
+        <>
+         <input placeholder="Email..." onChange={(e) => setEmail(e.target.value)}/>
+            <input placeholder="Password..." 
+            type= "password"
+            onChange={(e) => setPassword(e.target.value)}/>
+            <button onClick={signIn}>Sign In</button>
+           
+           <button onClick={signInWithGoogle}> Sign in With Google</button>
+        </>
+    
+    )
+}
+function LogOff(){
     const logOut = async () => {
         try {
             await signOut(auth);
@@ -33,19 +64,9 @@ export const Auth = () => {
             console.log(err);
         }
     }
-    return (
-        <div>   
-            <input placeholder="Email..." onChange={(e) => setEmail(e.target.value)}/>
-            <input placeholder="Password..." 
-            type= "password"
-            onChange={(e) => setPassword(e.target.value)}/>
-            <button onClick={signIn}>Sign In</button>
-           
-           <button onClick={signInWithGoogle}> Sign in With Google</button>
-           <button onClick={logOut}> Logout</button>
-         
-        </div>
-    );
-};
-
-// <p>{auth?.currentUser?.email}</p>
+    return(
+        <>
+             <button onClick={logOut}> Logout</button>
+        </>
+    )
+}
