@@ -13,26 +13,19 @@ import {
   Legend,
 } from "recharts";
 import {
-  createBrowserRouter,
-  RouterProvider,
+  BrowserRouter as Router, Route, Routes
 } from "react-router-dom";
 import login from './pages/login';
 import { clear } from '@testing-library/user-event/dist/clear';
 import { Auth } from './components/auth';
 import { dataBase } from './config/firebase'; // data from fire base 
 import { getDocs } from 'firebase/firestore';
-import { getDoc, collection } from 'firebase/firestore';
+import { getDoc, collection, addDoc } from 'firebase/firestore';
 import 'firebase/auth'; 
-
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
+import { DateTimeDisplay } from './components/dateDisplay';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <div>Hello world!</div>,
-  },
-]);
 const availableTimes = ["12:00AM", "1:00","2:00","3:00", "4:00","5:00","6:00","7:00", "8:00","9:00", "10:00", "11:00", "12:00PM","1:00","2:00","3:00", "4:00","5:00","6:00","7:00", "8:00","9:00", "10:00", "11:00", "11:59"];
 const availableAM = ["AM", "PM"];
 const availableDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -240,11 +233,15 @@ let modifiedData = [
     Caffeine: 0, 
   },
 ]; 
+
 function App() {
 
+
   const caffeineDatabaseRef = collection(dataBase, "UserData"); // passed in database and the collection we are trying to access. caffeineDatabaseRef -> reference to our UserData collection
+  const mondayCafData = collection(dataBase, "Monday"); // reference to the Monday document in UserData collection
   const [databaseData, setdatabaseData] = useState([]);
   useEffect(() => {
+    
     const getdatabaseData = async() => { 
       try {
         const data = await getDocs(caffeineDatabaseRef); // get docs will get all of the docs inside this collection (i.e. UserData collection)
@@ -356,8 +353,12 @@ function App() {
     setButtonClicked("Sunday");
 
   }
+  const AddCaffeineToCurrentTime = () => {
+// add time 
 
-  const handleSubmit = () => {
+
+  }
+  const handleSubmit = async () => {
     let newData = modifiedData.map(item => ({ ...item }));
     let startIndex = 0;
     //let newData = initialData.slice();
@@ -414,6 +415,9 @@ function App() {
           TuesdayData[i].Caffeine = newCaf;
         }
       
+        await addDoc(caffeineDatabaseRef, { // adds a new document to the database
+          caffeineData: MondayData.map((item) => item.Caffeine), // adds the caffeine data to the database
+        });
     }else if(dayOfWeek == "Tuesday"){
       setButtonClicked("Tuesday");
 
@@ -473,18 +477,19 @@ function App() {
   };
   //const [user] = useAuthState(Auth);
  // console.log(user);
+
   return (
     <>
       <div className="App">
        
         <h1>Blood Caffeine Level</h1>
-        <div className="status">{buttonClicked}</div>
+        
 
         
-     
-             <Auth/>
+       <DateTimeDisplay/>
+        <Auth/>
     
-          
+         
         
    
         <input
@@ -493,7 +498,7 @@ function App() {
           onChange={(e) => setTime(e.target.value)}
           placeholder="Enter time (e.g., 4:00)"
         />
-
+        
         <select value={time} onChange={(e) => setTime(e.target.value)}>
           <option value="">Select Time</option>
           {availableTimes.map((timeOption, index) => (
@@ -519,9 +524,9 @@ function App() {
           placeholder="Caffeine amount (mg)"
         />
         <Button onClick={() => {handleSubmit()}}>Add to Chart</Button>
+        <Button onClick={() => {AddCaffeineToCurrentTime()}}>Add Caffeine To Current Time</Button>
       </div>
 
-      {/* LineChart component */}
       <LineChart
         width={1800}
         height={400}
@@ -562,5 +567,8 @@ function App() {
     </>
   );
 }
+
+
+
 
 export default App;

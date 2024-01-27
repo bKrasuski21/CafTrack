@@ -1,0 +1,61 @@
+.App {
+    text-align: center;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  
+  .App-header {
+    background-color: #f7f7f7;
+    padding: 20px;
+    color: #333;
+  }
+  
+  .App-link {
+    color: #61dafb;
+  }
+  
+  .status {
+    font-size: 20px;
+    color: #8044e4;
+    margin-bottom: 20px;
+  }
+  
+  /* Chart container */
+  .chart-container {
+    padding: 20px;
+  }
+  
+  /* Button styling */
+  .btn-custom {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-custom:hover {
+    background-color: #ddd;
+  }
+  
+  /* Input and Select styling */
+  input[type="text"],
+  input[type="number"],
+  select {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px; /* Adjust width as needed */
+  }
+  
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  select:focus {
+    outline: none;
+    border-color: #61dafb;
+    box-shadow: 0 0 5px rgba(97, 218, 251, 0.5);
+  }
+  
+  /* Make sure to add classes to your buttons and wrap your chart in a div with class 'chart-container' */
+  
