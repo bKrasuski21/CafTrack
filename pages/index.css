@@ -1,0 +1,85 @@
+
+/* App Container */
+/* App Container */
+.AppApp {
+  max-width: 2000; /* You can increase this or set it to 'none' to allow for more space */
+  
+  padding: 20px;
+  background: white !important;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(131, 4, 4, 0.1);
+  text-align: center; /* This will center the title and any other inline elements */
+}
+
+/* Chart Container */
+.chart-container {
+  display: flex; /* Add flex display */
+  align-items: center; /* Align items vertically in the center */
+  justify-content: center; /* Center content horizontally */
+  width: 100%; /* Adjust as necessary */
+  max-width: none;
+  margin-top: 20px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+/* Title */
+.Title {
+  color: #8ea527;
+  margin-bottom: 20px;
+  text-align: center; /* Ensures the title is centered */
+}
+
+/* Input and Select Styles */
+.appInput, .appSelect {
+  padding: 10px;
+  margin: 10px 5px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  width: 200px;
+}
+
+/* Buttons */
+.btn-custom {
+  background-color: #b9b867;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-custom:hover {
+  background-color: #5b700f;
+}
+
+/* Line Chart Styles */
+.appLineChart {
+  margin-top: 100%;
+  margin: 0 auto;
+  justify-content: center;
+}
+.chartLine{
+  justify-content: center;
+}
+/* Button Container */
+.appButtons {
+  margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 10px) {
+  .App, .chart-container {
+    width: 95%;
+    margin: 10px auto;
+  }
+
+  .appInput, .appSelect, .btn-custom {
+    width: calc(100% - 20px);
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'; // Import useState
 import { auth, googleProvider } from './config/firebase';
-import './App.css';
+//import './App.css';
 import Button from 'react-bootstrap/Button';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
@@ -15,7 +15,7 @@ import {
 import {
   BrowserRouter as Router, Route, Routes
 } from "react-router-dom";
-import login from './pages/login';
+
 import { clear } from '@testing-library/user-event/dist/clear';
 import { Auth } from './components/auth';
 import { dataBase } from './config/firebase'; // data from fire base 
@@ -25,6 +25,10 @@ import 'firebase/auth';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 import { DateTimeDisplay } from './components/dateDisplay';
+
+import {CafApp} from "./pages/index";
+//import { LoginAuth } from './components/login';
+
 
 const availableTimes = ["12:00AM", "1:00","2:00","3:00", "4:00","5:00","6:00","7:00", "8:00","9:00", "10:00", "11:00", "12:00PM","1:00","2:00","3:00", "4:00","5:00","6:00","7:00", "8:00","9:00", "10:00", "11:00", "11:59"];
 const availableAM = ["AM", "PM"];
@@ -235,6 +239,23 @@ let modifiedData = [
 ]; 
 
 function App() {
+  return (
+    <div className="App">
+      <Router>
+        <Routes>
+          <Route path="/" exact element={<CafApp/>}/>
+          <Route path="/login" element={<Auth/>}/>
+        </Routes>
+      </Router>
+    </div>
+  )
+}
+
+
+ 
+
+export default App;
+/*
 
 
   const caffeineDatabaseRef = collection(dataBase, "UserData"); // passed in database and the collection we are trying to access. caffeineDatabaseRef -> reference to our UserData collection
@@ -302,23 +323,8 @@ function App() {
    setChartData(initialData);
    
   } 
-  const processCaffeineData = () => {
-    //getdatabaseData();
-    console.log(databaseData);
-   /*databaseData.forEach((document) => {
-      if (document.caffeineData && Array.isArray(document.caffeineData)) {
-        // Now you have access to the caffeineData array of this document
-        let weirdData = MondayData.map(item => ({ ...item }));
+ 
 
-        document.caffeineData.forEach((item, index) => {
-          // Do something with each item
-            weirdData[index].Caffeine = item;
-          console.log(`Item at index ${index}:`, item);
-        });
-        setMondayData(weirdData);
-      }
-    });*/
-  }; 
   const Monday = () => {
     setChartData(MondayData);
     setButtonClicked("Monday");
@@ -566,9 +572,4 @@ function App() {
       
     </>
   );
-}
-
-
-
-
-export default App;
+  */
