@@ -34,7 +34,9 @@ export const Auth = () => {
     return (
         <>  
           <div className = "loginContainer">   
-            {user ? <LogOff /> : <SignIn />} 
+            {user ? <LogOff /> : <SignIn />}
+           
+ 
              </div>
         </>
                         
@@ -44,6 +46,7 @@ export const Auth = () => {
 function SignIn(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     
     const signIn = async() => {
@@ -63,6 +66,9 @@ function SignIn(){
             console.log(err);
         }
     };
+    const ContinueGuest = async() => {
+        navigate('/app');
+    }
     return (
         <>
         <div className="buttonTopContainer">
@@ -71,7 +77,8 @@ function SignIn(){
             type= "password"
             onChange={(e) => setPassword(e.target.value)}/>
             <Button className="loginButton" onClick={signIn}>Sign In</Button>
-           
+            <Button className="loginButton" onClick={ContinueGuest}>Continue As Guest</Button>
+
            <Button className="loginButtonGoogle" onClick={signInWithGoogle}> Sign in With Google</Button>
         </div>
         
