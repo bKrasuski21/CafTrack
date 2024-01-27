@@ -3,21 +3,39 @@ import { createUserWithEmailAndPassword, signInWithPopup, signOut } from 'fireba
 import { useState } from "react";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 //import { InputGroup } from 'react-bootstrap';
 import './loginSection.css';
 
+
+export const LogOffApp = () => {
+    
+    const [user] = useAuthState(auth);
+    const navigate = useNavigate();
+    //signOut(auth);
+    if(user){
+       navigate('/app'); 
+    }else {
+        navigate('/');
+    }
+    
+}
 export const Auth = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     //const auth = firebase.auth();
     const [user] = useAuthState(auth);
 
     console.log(auth?.currentUser?.email);
-
+        if(user){
+            navigate('/app');
+        }
     return (
-        <>                  <div className = "loginContainer">   
-                                {user ? <LogOff /> : <SignIn />} 
-                            </div>
+        <>  
+          <div className = "loginContainer">   
+            {user ? <LogOff /> : <SignIn />} 
+             </div>
         </>
                         
                 

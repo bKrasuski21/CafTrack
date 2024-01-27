@@ -243,8 +243,8 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" exact element={<CafApp/>}/>
-          <Route path="/login" element={<Auth/>}/>
+          <Route path="/" exact element={<Auth/>}/>
+          <Route path="/app" element={<CafApp/>}/>
         </Routes>
       </Router>
     </div>

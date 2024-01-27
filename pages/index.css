@@ -3,7 +3,7 @@
 /* App Container */
 .AppApp {
   max-width: 2000; /* You can increase this or set it to 'none' to allow for more space */
-  
+  margin: auto;
   padding: 20px;
   background: white !important;
   border-radius: 8px;
@@ -69,7 +69,18 @@
 }
 /* Button Container */
 .appButtons {
+  display: flex; /* Add flex display */
+  align-items: center; /* Align items vertically in the center */
+  justify-content: center; /* Center content horizontally */
+  width: 100%; /* Adjust as necessary */
+  max-width: none;
   margin-top: 20px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+
 }
 
 /* Responsive Design */

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'; // Import useState
-import { auth, googleProvider } from '../config/firebase';
+import { auth, googleProvider,  } from '../config/firebase';
+import { signOut } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
 //import "bootstrap/dist/css/bootstrap.min.css";
@@ -19,6 +21,7 @@ import {
 
 import { clear } from '@testing-library/user-event/dist/clear';
 //import { Auth } from '../components/auth';
+import {LogOffApp} from '../components/auth';
 import { dataBase } from '../config/firebase'; // data from fire base 
 import { getDocs } from 'firebase/firestore';
 import { getDoc, collection, addDoc } from 'firebase/firestore';
@@ -274,7 +277,8 @@ export const CafApp = () => {
     const [FridayData, setFridayData] = useState(initialData.map(item => ({ ...item })));
     const [SaturdayData, setSaturdayData] = useState(initialData.map(item => ({ ...item })));
     const [SundayData, setSundayData] = useState(initialData.map(item => ({ ...item })));
-  
+    const [user] = useAuthState(auth);
+    const navigate = useNavigate();
     const clearData = () => {
       let tempData = modifiedData.map(item => ({ ...item }));// creates structured array to modify data(i.e. has all the times)
       if(buttonClicked == "Monday"){
@@ -345,7 +349,7 @@ export const CafApp = () => {
     const AddCaffeineToCurrentTime = () => {
   // add time 
   
-  
+    
     }
     const handleSubmit = async () => {
       let newData = modifiedData.map(item => ({ ...item }));
@@ -466,6 +470,15 @@ export const CafApp = () => {
     };
     //const [user] = useAuthState(Auth);
    // console.log(user);
+   const HandleLogOff = async () => {
+    try {
+      await signOut(auth);
+      navigate('/');
+    }catch (err){
+      console.log(err);
+    }
+    
+  }
   
     return (
       <>
@@ -474,10 +487,11 @@ export const CafApp = () => {
          
          <h1 className="Title" >Blood Caffeine Level</h1>
          
- 
-         
+         <Button className="btn-custom" onClick={() => {HandleLogOff()}}>Log Out</Button>
+
+       
         <DateTimeDisplay/>
-     
+  
           
          
     
